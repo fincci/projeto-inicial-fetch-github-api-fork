@@ -3,6 +3,7 @@ import { getRepos } from './services/repositories.js'
 
 import { user } from "./objects/user.js";
 import { screen } from "./objects/screen.js";
+import { getActivities } from './services/activities.js';
 
 document.getElementById('btn-search').addEventListener('click', () => {
     const userName = document.getElementById('input-search').value
@@ -32,11 +33,15 @@ document.getElementById('input-search').addEventListener('keyup', (e) => {
 async function getUserData(userName) {
     const userResponse = await getUser(userName)
     const reposResponse = await getRepos(userName)
+    const activitiesResponse = await getActivities(userName)
     if (userResponse.message === 'Not Found') {
         screen.renderNotFound()
+        console.log(userResponse.message);
     } else {
         user.setUserInfo(userResponse)
         user.setReposInfo(reposResponse)
+        user.setActivitiesInfo(activitiesResponse)
         screen.renderUser(user)
     }
+
 }
